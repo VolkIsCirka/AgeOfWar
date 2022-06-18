@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _cooldown;
     [SerializeField] private Spawner _spawner;
     [SerializeField] private Unit _prefab;
+    [SerializeField] private UnitsAll _units;
 
     private float _timeBeforeSpawn;
 
@@ -21,7 +22,7 @@ public class Enemy : MonoBehaviour
 
         if(_timeBeforeSpawn == 0)
         {
-            _spawner.Spawn(_prefab, Team.PC);
+            _units.TakeUnit(_spawner.Spawn(_prefab, Team.PC));
             _timeBeforeSpawn = _cooldown;
         }
     }
