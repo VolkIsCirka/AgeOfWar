@@ -9,8 +9,6 @@ public class Spawner : MonoBehaviour
 
     private List<Unit> _units;
 
-    public event Action<Unit> Spawned;
-
     public IReadOnlyList<Unit> Units => _units;
 
     private void Awake()
@@ -18,13 +16,13 @@ public class Spawner : MonoBehaviour
         _units = new List<Unit>();
     }
 
-    public void Spawn(Unit prefab,Team team)
+    public Unit Spawn(Unit prefab,Team team)
     {
-        float offset = _offset * _units.Count;
+        float offset = _offset;
         Unit unit = Instantiate(prefab, transform.position + new Vector3(offset, 0, 0), Quaternion.identity);
         unit.Init(team);
         Add(unit);
-        Spawned?.Invoke(unit);
+        return unit;
     }
 
     private void Add(Unit unit)

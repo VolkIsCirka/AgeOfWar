@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class Weapon : MonoBehaviour
 {
     [SerializeField] private float _cooldown;
     [SerializeField] private int _damage;
+    [SerializeField] private int _distanceForAttack;
 
     private float _timeBeforeAttack;
     private Unit _target;
 
+    public event Action LostTarget;
+
     public bool IsFree => _target == null;
 
     public int Damage => _damage;
+
+    public int DistanceForAttack => _distanceForAttack;
 
     private void Awake()
     {
@@ -28,6 +34,11 @@ public abstract class Weapon : MonoBehaviour
             if(_timeBeforeAttack == 0)
             {
                 Attack(_target);
+
+                if (_target.IsLive == false)
+                {
+                    LostTarget?.Invoke();
+                }
                 _timeBeforeAttack = _cooldown;
             }
         }
